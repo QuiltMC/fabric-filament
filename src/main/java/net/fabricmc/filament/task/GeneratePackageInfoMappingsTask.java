@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.Enumeration;
+import java.util.Locale;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -90,15 +91,18 @@ public class GeneratePackageInfoMappingsTask extends DefaultTask {
 	}
 
 	private void generateMapping(String name) throws IOException {
-		String inputName = name.substring(name.lastIndexOf("/") + 1);
-		String className = "PackageInfo" + name.substring(name.lastIndexOf("_") + 1);
+		String packageInfoId = name.substring(name.lastIndexOf("_") + 1);
+		if (Character.isLowerCase(packageInfoId.charAt(0))) {
+			packageInfoId = packageInfoId.substring(0, 1).toUpperCase(Locale.ROOT) + packageInfoId.substring(1);
+		}
+		String className = "PackageInfo" + packageInfoId;
 		String fullName = packageName.get() + className;
 		File mappingsFile = new File(outputDir.get().getAsFile(), className + ".mapping");
 
 		mappingsFile.getParentFile().mkdirs();
 
 		try (PrintWriter writer = new PrintWriter(new FileWriter(mappingsFile))) {
-			writer.printf("CLASS net/minecraft/%s %s", inputName, fullName);
+			writer.printf("CLASS %s %s", name, fullName);
 			writer.print('\n'); // println is platform-dependent and may produce CRLF.
 		}
 	}
