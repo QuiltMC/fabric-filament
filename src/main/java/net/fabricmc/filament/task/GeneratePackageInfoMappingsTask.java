@@ -92,9 +92,11 @@ public class GeneratePackageInfoMappingsTask extends DefaultTask {
 
 	private void generateMapping(String name) throws IOException {
 		String packageInfoId = name.substring(name.lastIndexOf("_") + 1);
+
 		if (Character.isLowerCase(packageInfoId.charAt(0))) {
 			packageInfoId = packageInfoId.substring(0, 1).toUpperCase(Locale.ROOT) + packageInfoId.substring(1);
 		}
+
 		String className = "PackageInfo" + packageInfoId;
 		String fullName = packageName.get() + className;
 		File mappingsFile = new File(outputDir.get().getAsFile(), className + ".mapping");
