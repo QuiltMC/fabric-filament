@@ -9,8 +9,8 @@ plugins {
 
 def ENV = System.getenv()
 
-group = 'net.fabricmc'
-version = '0.3.2' + (ENV.GITHUB_ACTIONS ? "" : "+local")
+group = 'org.quiltmc'
+version = '0.3.3' + (ENV.GITHUB_ACTIONS ? "" : "+local")
 
 java {
 	sourceCompatibility = JavaVersion.VERSION_16
@@ -27,6 +27,10 @@ tasks.withType(JavaCompile) {
 repositories {
 	mavenCentral()
 
+	maven {
+		name 'Quilt'
+		url 'https://maven.quiltmc.org/repository/release'
+	}
 	maven {
 		name = 'Fabric'
 		url = 'https://maven.fabricmc.net'
